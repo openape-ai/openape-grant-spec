@@ -37,8 +37,8 @@
 
 **Mitigations:**
 
-- **`allow_once` grants** — single-use tokens that are invalidated after first use.
-- **Short TTLs** — `allow_ttl` grants SHOULD use the shortest practical expiration.
+- **`once` grants** — single-use tokens that are invalidated after first use.
+- **Short TTLs** — `timed` grants SHOULD use the shortest practical expiration.
 - **Nonce tracking** — target systems MAY track used `grant_id` values to prevent replay.
 
 ### 5.5 Agent-compiled Binaries

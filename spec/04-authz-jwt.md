@@ -15,7 +15,7 @@ When a grant is approved, the Grants Server issues an **Authorization JWT (AuthZ
 | `iat` | Yes | Issued at — Unix timestamp. |
 | `exp` | Yes | Expiration — Unix timestamp. MUST be set for all grant types. |
 | `grant_id` | Yes | Unique identifier of the grant. |
-| `grant_type` | Yes | One of `allow_once`, `allow_ttl`, `allow_always`. |
+| `grant_type` | Yes | One of `once`, `timed`, `always`. |
 | `cmd_hash` | Yes* | `sha256(command_string)` — binds the token to a specific command. |
 | `request_hash` | Yes* | For proxy use: `sha256(METHOD + " " + URL + "\n" + BODY)`. |
 | `decided_by` | Yes | Identity of the human who approved the grant. |
@@ -80,7 +80,7 @@ request_hash = "sha256:7d865e959b2466918c9863afca942d0fb89d7c9ac0c99bafc3749504d
   "iat": 1740700000,
   "exp": 1740700300,
   "grant_id": "g_abc123",
-  "grant_type": "allow_once",
+  "grant_type": "once",
   "cmd_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb924...",
   "decided_by": "admin@example.com",
   "target": "server.example.com"
@@ -96,6 +96,6 @@ The target system (or proxy) MUST perform the following verification steps:
 3. **Check `aud`** — reject tokens not intended for this system.
 4. **Verify `cmd_hash`** — compute `sha256(received_command)` and compare to the `cmd_hash` claim. Reject on mismatch.
 5. **Verify `request_hash`** (if proxy) — compute `sha256(METHOD + " " + URL + "\n" + BODY)` from the actual request and compare. Reject on mismatch.
-6. **Check `grant_type`** — for `allow_once`, verify the grant has not already been consumed (requires state tracking or coordination with the Grants Server).
+6. **Check `grant_type`** — for `once`, verify the grant has not already been consumed (requires state tracking or coordination with the Grants Server).
 
 **Critical:** The target system MUST perform hash verification locally. Relying solely on token validity without checking the hash defeats the command-binding guarantee.

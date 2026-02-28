@@ -46,14 +46,14 @@ These MAY point to the same server or to different servers. The identity provide
 ### Example: Separate Servers
 
 ```
-_ddisa.example.com.            IN TXT "v=ddisa1 url=https://id.example.com"
+_ddisa.example.com.            IN TXT "v=ddisa1; idp=https://id.example.com; mode=open"
 _openape_grants.example.com.   IN TXT "v=openape1 url=https://grants.example.com"
 ```
 
 ### Example: Combined Server
 
 ```
-_ddisa.example.com.            IN TXT "v=ddisa1 url=https://openape.example.com"
+_ddisa.example.com.            IN TXT "v=ddisa1; idp=https://openape.example.com; mode=open"
 _openape_grants.example.com.   IN TXT "v=openape1 url=https://openape.example.com"
 ```
 

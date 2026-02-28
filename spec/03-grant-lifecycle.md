@@ -16,7 +16,7 @@ requested ──→ approved ──→ used
 | `requested` | Agent has submitted a grant request. Awaiting human decision. |
 | `approved` | Human has approved the grant. Token is available. |
 | `denied` | Human has denied the grant. |
-| `used` | The grant has been consumed (applies to `allow_once`). |
+| `used` | The grant has been consumed (applies to `once`). |
 | `expired` | The grant's time window has elapsed. |
 | `revoked` | The grant was explicitly revoked by a human. |
 
@@ -24,11 +24,11 @@ requested ──→ approved ──→ used
 
 | Type | Behavior |
 |------|----------|
-| `allow_once` | Single use. Transitions to `used` after one successful execution. |
-| `allow_ttl` | Valid for a specified duration. Multiple uses permitted until expiration. |
-| `allow_always` | No expiration. Valid until explicitly revoked. |
+| `once` | Single use. Transitions to `used` after one successful execution. |
+| `timed` | Valid for a specified duration. Multiple uses permitted until expiration. |
+| `always` | No expiration. Valid until explicitly revoked. |
 
-Implementations SHOULD default to `allow_once` unless the approver explicitly selects a broader type. The `allow_always` type SHOULD require additional confirmation (e.g., a warning in the approval UI).
+Implementations SHOULD default to `once` unless the approver explicitly selects a broader type. The `always` type SHOULD require additional confirmation (e.g., a warning in the approval UI).
 
 ## Grant Request
 
@@ -44,7 +44,7 @@ The agent MUST authenticate with the Grants Server using a valid identity token 
   "reason": "Web server needed for deployment of project X",
   "cmd_hash": "sha256:a1b2c3d4e5f6...",
   "target": "server.example.com",
-  "requested_type": "allow_once"
+  "requested_type": "once"
 }
 ```
 
@@ -54,7 +54,9 @@ The agent MUST authenticate with the Grants Server using a valid identity token 
 | `reason` | Yes | Human-readable explanation of why the action is needed. |
 | `cmd_hash` | Yes | `sha256(command)` — cryptographic binding to the exact command string. |
 | `target` | No | The target system where the command will execute. |
-| `requested_type` | No | Preferred grant type. Server/approver may override. |
+| `requested_type` | No | Preferred grant type (`once`, `timed`, `always`). Server/approver may override. |
+| `permissions` | No | Array of permission strings (e.g., `["read", "write"]`). Application-defined. |
+| `duration` | No | Requested duration in seconds (for `timed` grants). |
 
 ### Response
 

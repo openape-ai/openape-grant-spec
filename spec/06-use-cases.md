@@ -14,7 +14,7 @@ An AI agent operating on a server needs to execute a command that requires eleva
    - **command:** `systemctl restart nginx`
    - **reason:** "Configuration updated for project X, restart required to apply changes"
    - **cmd_hash:** `sha256("systemctl restart nginx")`
-4. The human approver reviews the command and reason, then approves with `allow_once`.
+4. The human approver reviews the command and reason, then approves with `once`.
 5. The agent receives an AuthZ-JWT.
 6. The agent presents the JWT to the execution proxy (e.g., `apes` — the OpenApe sudo equivalent).
 7. `apes` verifies the JWT signature, checks `cmd_hash` against the actual command, and executes.
@@ -36,7 +36,7 @@ An AI agent needs to make HTTP requests to external services (APIs, websites) bu
    - **command:** `POST https://api.cloud.example.com/v1/instances {"type":"small","region":"eu"}`
    - **reason:** "Provisioning compute instance for load testing"
    - **request_hash:** `sha256("POST https://api.cloud.example.com/v1/instances\n{\"type\":\"small\",\"region\":\"eu\"}")`
-3. The human approves with `allow_once`.
+3. The human approves with `once`.
 4. The agent receives an AuthZ-JWT containing the `request_hash`.
 5. The agent sends the HTTP request through an authorized proxy, attaching the JWT.
 6. The proxy verifies the JWT, recomputes the `request_hash` from the actual request, confirms it matches, and forwards the request.
@@ -59,7 +59,7 @@ An AI agent manages cloud infrastructure using service account credentials. Oper
    - **reason:** "New analytics service needs read access to ingest data from bucket X"
    - **cmd_hash:** computed from the exact command
 3. The human approver reviews. The UI highlights this as a permission-changing operation (high risk).
-4. The approver grants `allow_once`.
+4. The approver grants `once`.
 5. The agent receives the AuthZ-JWT and presents it to the operations gateway.
 6. The gateway verifies the token and executes the operation using the service account credentials.
 

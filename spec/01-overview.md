@@ -48,6 +48,6 @@ Every grant produces a verifiable record:
 
 Grants include mechanisms to prevent reuse:
 
-- `allow_once` grants are single-use
+- `once` grants are single-use
 - All grants carry expiration times
 - Command hashes bind tokens to exact operations
